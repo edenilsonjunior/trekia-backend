@@ -1,6 +1,7 @@
-package br.edu.ifsp.arq.trekia.models.services.users;
+package br.edu.ifsp.arq.trekia.models.services.implementations;
 
 import br.edu.ifsp.arq.trekia.models.entities.User;
+import br.edu.ifsp.arq.trekia.models.services.contracts.ITokenService;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;

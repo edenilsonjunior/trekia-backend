@@ -1,7 +1,7 @@
 package br.edu.ifsp.arq.trekia.security;
 
 import br.edu.ifsp.arq.trekia.models.repositories.UserRepository;
-import br.edu.ifsp.arq.trekia.models.services.users.ITokenService;
+import br.edu.ifsp.arq.trekia.models.services.contracts.ITokenService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

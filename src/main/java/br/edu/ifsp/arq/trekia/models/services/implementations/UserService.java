@@ -1,4 +1,4 @@
-package br.edu.ifsp.arq.trekia.models.services.users;
+package br.edu.ifsp.arq.trekia.models.services.implementations;
 
 import br.edu.ifsp.arq.trekia.dtos.users.LoginRequestDto;
 import br.edu.ifsp.arq.trekia.dtos.users.RegisterRequestDto;
@@ -6,11 +6,16 @@ import br.edu.ifsp.arq.trekia.dtos.users.UpdateUserRequestDto;
 import br.edu.ifsp.arq.trekia.models.entities.User;
 import br.edu.ifsp.arq.trekia.models.repositories.UserRepository;
 import br.edu.ifsp.arq.trekia.models.services.Result;
+import br.edu.ifsp.arq.trekia.models.services.contracts.ITokenService;
+import br.edu.ifsp.arq.trekia.models.services.contracts.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
@@ -86,5 +91,13 @@ public class UserService implements IUserService {
         userRepository.save(user);
 
         return Result.toResponse("Usuário atualizado com sucesso", HttpStatus.OK);
+    }
+
+    @Override
+    public Optional<User> getAuthenticatedUser() {
+
+        var email = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        return userRepository.findByEmail(email);
     }
 }

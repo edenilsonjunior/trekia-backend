@@ -1,7 +1,7 @@
 package br.edu.ifsp.arq.trekia.configs;
 
 import br.edu.ifsp.arq.trekia.models.repositories.UserRepository;
-import br.edu.ifsp.arq.trekia.models.services.users.ITokenService;
+import br.edu.ifsp.arq.trekia.models.services.contracts.ITokenService;
 import br.edu.ifsp.arq.trekia.security.CustomAuthenticationEntryPoint;
 import br.edu.ifsp.arq.trekia.security.JwtFilter;
 import org.springframework.context.annotation.Bean;

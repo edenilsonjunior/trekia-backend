@@ -1,4 +1,4 @@
-package br.edu.ifsp.arq.trekia.models.services.users;
+package br.edu.ifsp.arq.trekia.models.services.contracts;
 
 
 import br.edu.ifsp.arq.trekia.models.entities.User;

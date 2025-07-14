@@ -3,7 +3,7 @@ package br.edu.ifsp.arq.trekia.controllers;
 import br.edu.ifsp.arq.trekia.dtos.users.LoginRequestDto;
 import br.edu.ifsp.arq.trekia.dtos.users.RegisterRequestDto;
 import br.edu.ifsp.arq.trekia.dtos.users.UpdateUserRequestDto;
-import br.edu.ifsp.arq.trekia.models.services.users.IUserService;
+import br.edu.ifsp.arq.trekia.models.services.contracts.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
