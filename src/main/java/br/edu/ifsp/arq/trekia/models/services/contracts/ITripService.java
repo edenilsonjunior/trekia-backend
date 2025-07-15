@@ -1,7 +1,10 @@
 package br.edu.ifsp.arq.trekia.models.services.contracts;
 
 import br.edu.ifsp.arq.trekia.dtos.trips.*;
+import br.edu.ifsp.arq.trekia.models.entities.Trip;
 import org.springframework.http.ResponseEntity;
+
+import java.util.Optional;
 
 public interface ITripService {
 
@@ -14,4 +17,6 @@ public interface ITripService {
     ResponseEntity<?> updateTrip(long tripId, UpdateTripRequestDto updateTripRequest);
 
     ResponseEntity<?> deleteTrip(long tripId);
+
+    Optional<Trip> findByTripId(long tripId);
 }

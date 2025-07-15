@@ -1,4 +1,9 @@
 package br.edu.ifsp.arq.trekia.dtos.checkitems;
 
-public record CreateCheckItemRequestDto() {
+import jakarta.validation.Valid;
+
+@Valid
+public record CreateCheckItemRequestDto(
+        String description
+) {
 }

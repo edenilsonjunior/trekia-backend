@@ -7,7 +7,7 @@ public interface ICheckItemService {
 
     ResponseEntity<?> getCheckItemsByTripId(long tripId);
 
-    ResponseEntity<?> createCheckItem(CreateCheckItemRequestDto createCheckItemRequest);
+    ResponseEntity<?> createCheckItem(long tripId, CreateCheckItemRequestDto createCheckItemRequest);
 
     ResponseEntity<?> toggleCheckItemChecked(long tripId, long checkItemId);
 
