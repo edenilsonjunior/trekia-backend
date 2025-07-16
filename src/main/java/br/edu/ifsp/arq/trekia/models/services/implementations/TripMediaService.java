@@ -30,22 +30,23 @@ public class TripMediaService implements ITripMediaService {
     }
 
     @Override
-    public ResponseEntity<?> createTripMedia(CreateTripMediaRequestDto createTripMediaRequest) {
-        Optional<Trip> tripOptional = tripService.findByTripId(createTripMediaRequest.getId());
+    public ResponseEntity<?> createTripMedia(long tripId, CreateTripMediaRequestDto createTripMediaRequest) {
 
-        if(tripOptional.isEmpty()) {
+        var trip = tripService
+                .findByTripId(tripId).orElse(null);
+
+        if (trip == null) {
             return Result.toResponse("Viagem não encontrada", HttpStatus.NOT_FOUND);
         }
 
         TripMedia tripMedia = new TripMedia();
-        tripMedia.setTrip(tripOptional.get());
-        tripMedia.setDescription(createTripMediaRequest.getResume());
+        tripMedia.setTrip(trip);
+        tripMedia.setDescription(createTripMediaRequest.getDescription());
         tripMedia.setMedia(MediaUtil.convertMultipartFileToBytes(createTripMediaRequest.getMedia()));
 
         tripMediaRepository.save(tripMedia);
 
-        return Result.toResponse("Imagem adicionada com sucesso", HttpStatus.CREATED);
-
+        return Result.toResponse(tripMedia, "Imagem adicionada com sucesso", HttpStatus.CREATED);
     }
 
     @Override
@@ -53,16 +54,16 @@ public class TripMediaService implements ITripMediaService {
         List<TripMedia> tripMedia = tripMediaRepository.findByTripId(tripId);
 
         if (tripMedia.isEmpty()) {
-            return Result.toResponse("Imagem não encontrada para esta viagem", HttpStatus.NO_CONTENT);
+            return Result.toResponse(List.of(), "Imagem não encontrada para esta viagem", HttpStatus.OK);
         }
 
         var tripMediaDto = tripMedia.stream()
-            .map(media -> new TripMediaResponseDto(
-                media.getId(),
-                media.getMedia(),
-                media.getDescription()
-            ))
-            .toList();
+                .map(media -> new TripMediaResponseDto(
+                        media.getId(),
+                        media.getMedia(),
+                        media.getDescription()
+                ))
+                .toList();
 
         return Result.toResponse(tripMediaDto, HttpStatus.OK);
     }

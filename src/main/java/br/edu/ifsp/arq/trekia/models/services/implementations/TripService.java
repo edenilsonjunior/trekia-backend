@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -56,14 +57,14 @@ public class TripService implements ITripService {
         }
 
         var tripListDto = trips.stream()
-            .map(trip -> new TripResponseDto(
-                trip.getId(),
-                trip.getTitle(),
-                trip.getDescription(),
-                trip.getStartDate(),
-                trip.getEndDate()
-            ))
-            .toList();
+                .map(trip -> new TripResponseDto(
+                        trip.getId(),
+                        trip.getTitle(),
+                        trip.getDescription(),
+                        trip.getStartDate(),
+                        trip.getEndDate()
+                ))
+                .toList();
 
         return Result.toResponse(tripListDto, HttpStatus.OK);
     }
@@ -73,16 +74,16 @@ public class TripService implements ITripService {
         var tripOpt = tripRepository.findById(tripId);
 
         if (tripOpt.isEmpty()) {
-            return Result.toResponse("Viagem não encontrada.", HttpStatus.NO_CONTENT);
+            return Result.toResponse("Viagem não encontrada.", HttpStatus.NOT_FOUND);
         }
 
         var trip = tripOpt.get();
         var tripResponse = new TripResponseDto(
-            trip.getId(),
-            trip.getTitle(),
-            trip.getDescription(),
-            trip.getStartDate(),
-            trip.getEndDate()
+                trip.getId(),
+                trip.getTitle(),
+                trip.getDescription(),
+                trip.getStartDate(),
+                trip.getEndDate()
         );
 
         return Result.toResponse(tripResponse, HttpStatus.OK);
@@ -93,7 +94,7 @@ public class TripService implements ITripService {
         var trip = tripRepository.findById(tripId).orElse(null);
 
         if (trip == null) {
-            return Result.toResponse("Viagem não encontrada",HttpStatus.NOT_FOUND);
+            return Result.toResponse("Viagem não encontrada", HttpStatus.NOT_FOUND);
         }
 
         trip.setTitle(updateTripRequest.title());
@@ -111,12 +112,22 @@ public class TripService implements ITripService {
         var trip = tripRepository.findById(tripId).orElse(null);
 
         if (trip == null) {
-            return Result.toResponse("Viagem não encontrada",HttpStatus.NOT_FOUND);
+            return Result.toResponse("Viagem não encontrada", HttpStatus.NOT_FOUND);
         }
 
         tripRepository.delete(trip);
 
         return Result.toResponse("Viagem deletada com sucesso", HttpStatus.NO_CONTENT);
+    }
+
+    @Override
+    public ResponseEntity<?> deleteTrips(List<Long> ids) {
+
+        for (Long id : ids) {
+            this.deleteTrip(id);
+        }
+
+        return Result.toResponse("Viagens deletadas com sucesso", HttpStatus.NO_CONTENT);
     }
 
     @Override

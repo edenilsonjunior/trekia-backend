@@ -36,18 +36,18 @@ public class CheckItemService implements ICheckItemService {
         }
 
         var checkListDto = checks.stream()
-            .map(item -> new CheckItemResponseDto(
-                item.getId(),
-                item.getDescription(),
-                item.getIsChecked()
-            ))
-            .toList();
+                .map(item -> new CheckItemResponseDto(
+                        item.getId(),
+                        item.getDescription(),
+                        item.getIsChecked()
+                ))
+                .toList();
 
         return Result.toResponse(checkListDto, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<?> createCheckItem(long tripId,CreateCheckItemRequestDto createCheckItemRequest) {
+    public ResponseEntity<?> createCheckItem(long tripId, CreateCheckItemRequestDto createCheckItemRequest) {
         var checkItem = new CheckItem();
         Optional<Trip> tripOptional = tripService.findByTripId(tripId);
 
@@ -85,7 +85,7 @@ public class CheckItemService implements ICheckItemService {
 
     @Override
     public ResponseEntity<?> deleteCheckItem(long tripId, long checkItemId) {
-       Optional<CheckItem> checkItemOptional = checkItemRepository.findById(checkItemId);
+        Optional<CheckItem> checkItemOptional = checkItemRepository.findById(checkItemId);
 
         if (checkItemOptional.isEmpty() || checkItemOptional.get().getTrip().getId() != tripId) {
             return Result.toResponse("Check não encontrado para esta viagem", HttpStatus.NOT_FOUND);

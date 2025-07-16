@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface ITripMediaService {
 
-    ResponseEntity<?> createTripMedia(CreateTripMediaRequestDto createTripMediaRequest);
+    ResponseEntity<?> createTripMedia(long tripId, CreateTripMediaRequestDto createTripMediaRequest);
     ResponseEntity<?> getTripMediaByTripId(long tripId);
     ResponseEntity<?> deleteTripMedia(long tripId, long tripMediaId);
 }

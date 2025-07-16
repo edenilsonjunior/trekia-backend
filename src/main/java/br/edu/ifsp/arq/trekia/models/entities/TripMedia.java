@@ -30,4 +30,8 @@ public class TripMedia {
     public void prePersist() {
         this.uploadedAt = LocalDateTime.now();
     }
+
+    public String getMediaBase64() {
+        return media != null ? java.util.Base64.getEncoder().encodeToString(media) : null;
+    }
 }

@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/trips")
 public class TripsController {
@@ -29,6 +31,7 @@ public class TripsController {
         this.tripService = tripService;
     }
 
+    //TRIP
     @PostMapping()
     public ResponseEntity<?> createTrip(@RequestBody CreateTripRequestDto createTripRequest) {
         return tripService.createTrip(createTripRequest);
@@ -49,41 +52,12 @@ public class TripsController {
         return tripService.deleteTrip(id);
     }
 
-    @PostMapping("/{id}/check-items")
-    public ResponseEntity<?> createCheckItem(@PathVariable long id, @RequestBody CreateCheckItemRequestDto createCheckItemRequest) {
-        return checkItemService.createCheckItem(id,createCheckItemRequest);
+    @DeleteMapping("/batch")
+    public ResponseEntity<?> deleteTrips(@RequestParam List<Long> ids) {
+        return tripService.deleteTrips(ids);
     }
 
-    @GetMapping("/{id}/check-items")
-    public ResponseEntity<?> getCheckItemsByTripId(@PathVariable long id) {
-        return checkItemService.getCheckItemsByTripId(id);
-    }
-
-    @PatchMapping("/{id}/check-items/{checkItemId}/toggle")
-    public ResponseEntity<?> toggleCheckItemChecked(@PathVariable long id, @PathVariable long checkItemId) {
-        return checkItemService.toggleCheckItemChecked(id, checkItemId);
-    }
-
-    @DeleteMapping("/{id}/check-items/{checkItemId}")
-    public ResponseEntity<?> deleteCheckItem(@PathVariable long id, @PathVariable long checkItemId) {
-        return checkItemService.deleteCheckItem(id, checkItemId);
-    }
-
-    @PostMapping(value = "/media", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<?> createTripMedia(@ModelAttribute CreateTripMediaRequestDto createTripMediaRequestDto) {
-        return tripMediaService.createTripMedia(createTripMediaRequestDto);
-    }
-
-    @GetMapping("/{id}/media")
-    public ResponseEntity<?> getTripMediaByTripId(@PathVariable long id) {
-        return tripMediaService.getTripMediaByTripId(id);
-    }
-
-    @DeleteMapping("/{id}/media/{mediaId}")
-    public ResponseEntity<?> deleteTripMedia(@PathVariable long id, @PathVariable long mediaId) {
-        return tripMediaService.deleteTripMedia(id, mediaId);
-    }
-
+    // SCHEDULES
     @GetMapping("/{tripId}/schedules")
     public ResponseEntity<?> getSchedulesByTripId(@PathVariable long tripId) {
         return scheduleService.getSchedulesByTripId(tripId);
@@ -122,4 +96,42 @@ public class TripsController {
         return scheduleService.deleteSchedule(tripId, scheduleId);
     }
 
+
+    // TRIP MEDIA
+    @PostMapping(value = "/{id}/media", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> createTripMedia(@PathVariable long id, @ModelAttribute CreateTripMediaRequestDto createTripMediaRequestDto) {
+        return tripMediaService.createTripMedia(id, createTripMediaRequestDto);
+    }
+
+    @GetMapping("/{id}/media")
+    public ResponseEntity<?> getTripMediaByTripId(@PathVariable long id) {
+        return tripMediaService.getTripMediaByTripId(id);
+    }
+
+    @DeleteMapping("/{id}/media/{mediaId}")
+    public ResponseEntity<?> deleteTripMedia(@PathVariable long id, @PathVariable long mediaId) {
+        return tripMediaService.deleteTripMedia(id, mediaId);
+    }
+
+
+    // CHECK ITEMS
+    @PostMapping("/{id}/check-items")
+    public ResponseEntity<?> createCheckItem(@PathVariable long id, @RequestBody CreateCheckItemRequestDto createCheckItemRequest) {
+        return checkItemService.createCheckItem(id,createCheckItemRequest);
+    }
+
+    @GetMapping("/{id}/check-items")
+    public ResponseEntity<?> getCheckItemsByTripId(@PathVariable long id) {
+        return checkItemService.getCheckItemsByTripId(id);
+    }
+
+    @PatchMapping("/{id}/check-items/{checkItemId}/toggle")
+    public ResponseEntity<?> toggleCheckItemChecked(@PathVariable long id, @PathVariable long checkItemId) {
+        return checkItemService.toggleCheckItemChecked(id, checkItemId);
+    }
+
+    @DeleteMapping("/{id}/check-items/{checkItemId}")
+    public ResponseEntity<?> deleteCheckItem(@PathVariable long id, @PathVariable long checkItemId) {
+        return checkItemService.deleteCheckItem(id, checkItemId);
+    }
 }

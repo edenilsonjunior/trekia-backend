@@ -5,7 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class CreateTripMediaRequestDto{
-    Long id;
     MultipartFile media;
-    String resume;
+    String description;
 }
