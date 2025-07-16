@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,13 +29,13 @@ public class CheckItemService implements ICheckItemService {
 
     @Override
     public ResponseEntity<?> getCheckItemsByTripId(long tripId) {
-        List<CheckItem> checkList = checkItemRepository.findByTripId(tripId);
+        var checks = checkItemRepository.findByTripId(tripId);
 
-        if (checkList.isEmpty()) {
-            return Result.toResponse("Nenhum Check encontrado", HttpStatus.NOT_FOUND);
+        if (checks.isEmpty()) {
+            return Result.toResponse("Nenhum check encontrado", HttpStatus.NO_CONTENT);
         }
 
-        var checkListDto = checkList.stream()
+        var checkListDto = checks.stream()
             .map(item -> new CheckItemResponseDto(
                 item.getId(),
                 item.getDescription(),
@@ -75,6 +74,7 @@ public class CheckItemService implements ICheckItemService {
 
         CheckItem checkItem = checkItemOptional.get();
         checkItem.setIsChecked(!checkItem.getIsChecked());
+
         checkItemRepository.save(checkItem);
 
         return Result.toResponse(
@@ -92,6 +92,7 @@ public class CheckItemService implements ICheckItemService {
         }
 
         checkItemRepository.deleteById(checkItemId);
-        return Result.toResponse("Check removido com sucesso", HttpStatus.OK);
+
+        return Result.toResponse("Check removido com sucesso", HttpStatus.NO_CONTENT);
     }
 }
