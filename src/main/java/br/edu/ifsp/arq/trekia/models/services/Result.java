@@ -9,13 +9,13 @@ public class Result {
 
     public static <T> ResponseEntity<?> toResponse(
             T data,
-            String error,
+            String message,
             HttpStatus status
     ) {
         var map = new HashMap<String, Object>();
 
         map.put("data", data);
-        map.put("error", error);
+        map.put("message", message);
         map.put("status", status);
 
         return new ResponseEntity<>(map, status);
@@ -29,9 +29,9 @@ public class Result {
     }
 
     public static ResponseEntity<?> toResponse(
-            String error,
+            String message,
             HttpStatus status
     ) {
-        return toResponse(null, error, status);
+        return toResponse(null, message, status);
     }
 }

@@ -28,25 +28,25 @@ public class Schedule {
     private String description;
 
     @Column(precision = 8, scale = 6, nullable = false)
-    private BigDecimal latitude;
+    private BigDecimal latitude = BigDecimal.ZERO;
 
     @Column(precision = 9, scale = 6, nullable = false)
-    private BigDecimal longitude;
+    private BigDecimal longitude = BigDecimal.ZERO;
 
     @Column(name = "current_local_balance", nullable = false)
-    private BigDecimal currentLocalBalance;
+    private BigDecimal currentLocalBalance = BigDecimal.ONE;
 
     @Column(name = "currency_code", length = 3, nullable = false, columnDefinition = "CHAR(3)")
     private String currencyCode;
 
     @Column(name = "min_temperature", precision = 3, scale = 1, nullable = false)
-    private BigDecimal minTemperature;
+    private BigDecimal minTemperature = BigDecimal.ZERO;
 
     @Column(name = "max_temperature", precision = 3, scale = 1, nullable = false)
-    private BigDecimal maxTemperature;
+    private BigDecimal maxTemperature = BigDecimal.ZERO;
 
     @Column(name = "precipitation_chance", nullable = false)
-    private Integer precipitationChance;
+    private Integer precipitationChance = 0;
 
     @PrePersist
     public void prePersist() {

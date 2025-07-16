@@ -4,7 +4,9 @@ import br.edu.ifsp.arq.trekia.dtos.trips.CreateTripRequestDto;
 import br.edu.ifsp.arq.trekia.dtos.trips.UpdateTripRequestDto;
 import br.edu.ifsp.arq.trekia.models.services.contracts.ITripService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
+@Service
 public class TripService implements ITripService {
     @Override
     public ResponseEntity<?> createTrip(CreateTripRequestDto createTripRequest) {

@@ -3,6 +3,7 @@ package br.edu.ifsp.arq.trekia.models.services.implementations;
 import br.edu.ifsp.arq.trekia.dtos.users.LoginRequestDto;
 import br.edu.ifsp.arq.trekia.dtos.users.RegisterRequestDto;
 import br.edu.ifsp.arq.trekia.dtos.users.UpdateUserRequestDto;
+import br.edu.ifsp.arq.trekia.dtos.users.UserResponseDto;
 import br.edu.ifsp.arq.trekia.models.entities.User;
 import br.edu.ifsp.arq.trekia.models.repositories.UserRepository;
 import br.edu.ifsp.arq.trekia.models.services.Result;
@@ -35,16 +36,25 @@ public class UserService implements IUserService {
     public ResponseEntity<?> login(LoginRequestDto loginRequest) {
 
         var user = userRepository.findByEmail(loginRequest.email())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElse(null);
+
+        if (user == null) {
+            return Result.toResponse("Usuario não encontrado", HttpStatus.NOT_FOUND);
+        }
 
         if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
-
             return Result.toResponse("Senha incorreta", HttpStatus.UNAUTHORIZED);
         }
 
         var token = tokenService.generateToken(user);
 
-        return Result.toResponse(token, "Login realizado com sucesso", HttpStatus.CREATED);
+        var response = new UserResponseDto(
+                user.getName(),
+                user.getEmail(),
+                Optional.of(token)
+        );
+
+        return Result.toResponse(response, "Login realizado com sucesso", HttpStatus.CREATED);
     }
 
     @Override
@@ -60,7 +70,13 @@ public class UserService implements IUserService {
         user.setPassword(passwordEncoder.encode(registerRequest.password()));
         userRepository.save(user);
 
-        return Result.toResponse("Usuário cadastrado com sucesso", HttpStatus.CREATED);
+        var response = new UserResponseDto(
+                user.getName(),
+                user.getEmail(),
+                Optional.empty()
+        );
+
+        return Result.toResponse(response, "Usuário cadastrado com sucesso", HttpStatus.CREATED);
     }
 
     @Override
@@ -71,14 +87,21 @@ public class UserService implements IUserService {
             return Result.toResponse("Usuário não encontrado", HttpStatus.NOT_FOUND);
         }
 
-        return Result.toResponse(user.get(), HttpStatus.OK);
+        var response = new UserResponseDto(
+                user.get().getName(),
+                user.get().getEmail(),
+                Optional.empty()
+        );
+
+        return Result.toResponse(response, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<?> updateUser(long id, UpdateUserRequestDto updateUserRequest) {
+
         var user = userRepository.findById(id).orElse(null);
 
-        if( user == null) {
+        if (user == null) {
             return Result.toResponse("Usuário não encontrado", HttpStatus.NOT_FOUND);
         }
 
@@ -90,7 +113,13 @@ public class UserService implements IUserService {
 
         userRepository.save(user);
 
-        return Result.toResponse("Usuário atualizado com sucesso", HttpStatus.OK);
+        var response = new UserResponseDto(
+                user.getName(),
+                user.getEmail(),
+                Optional.empty()
+        );
+
+        return Result.toResponse(response, "Usuário atualizado com sucesso", HttpStatus.OK);
     }
 
     @Override

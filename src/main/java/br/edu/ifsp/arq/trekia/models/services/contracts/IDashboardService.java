@@ -7,9 +7,9 @@ import java.time.LocalDate;
 
 public interface IDashboardService {
 
-    ResponseEntity<?> getTripsByUserEmail(String email);
+    ResponseEntity<?> getTripsByUserId(long userId);
 
-    ResponseEntity<?> getWeather(BigDecimal latitude, BigDecimal longitude, LocalDate startDate, LocalDate endDate);
+    ResponseEntity<?> getWeather(BigDecimal latitude, BigDecimal longitude);
 
     ResponseEntity<?> getCurrency(String fromCurrency, String toCurrency);
 

@@ -27,13 +27,13 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
     }
 
     @Override
-    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException)
+    public void commence(HttpServletRequest request, HttpServletResponse response,
+            AuthenticationException authException)
             throws IOException, ServletException {
 
-        var originalUri = (String) request.getAttribute("jakarta.servlet.forward.request_uri");
-
-        if (WHITELIST.stream().anyMatch(originalUri::startsWith)) {
-            return;  // Permite o acesso sem bloquear
+        String requestURI = request.getRequestURI();
+        if (WHITELIST.stream().anyMatch(requestURI::startsWith)) {
+            return; // Permite o acesso sem bloquear
         }
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

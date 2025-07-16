@@ -29,16 +29,20 @@ public class UsersController {
         return userService.register(registerRequest);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getUserById(@PathVariable long id) {
-        return userService.getUserById(id);
+    @GetMapping
+    public ResponseEntity<?> getUserById() {
+
+        var user = userService.getAuthenticatedUser();
+
+        return userService.getUserById(user.get().getId());
     }
 
-    @PutMapping("/{id}")
+    @PutMapping()
     public ResponseEntity<?> updateUser(
-            @PathVariable long id,
             @RequestBody UpdateUserRequestDto updateUserRequest
     ) {
-        return userService.updateUser(id, updateUserRequest);
+        var user = userService.getAuthenticatedUser();
+
+        return userService.updateUser(user.get().getId(), updateUserRequest);
     }
 }
