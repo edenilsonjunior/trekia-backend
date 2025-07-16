@@ -52,10 +52,10 @@ public class TripService implements ITripService {
         var trips = tripRepository.findByUserId(userId);
 
         if (trips.isEmpty()) {
-            return Result.toResponse("Nenhuma viagem encontrada.", HttpStatus.NOT_FOUND);
+            return Result.toResponse("Nenhuma viagem encontrada.", HttpStatus.NO_CONTENT);
         }
 
-        var tripDtos = trips.stream()
+        var tripListDto = trips.stream()
             .map(trip -> new TripResponseDto(
                 trip.getId(),
                 trip.getTitle(),
@@ -65,7 +65,7 @@ public class TripService implements ITripService {
             ))
             .toList();
 
-        return Result.toResponse(tripDtos, HttpStatus.OK);
+        return Result.toResponse(tripListDto, HttpStatus.OK);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class TripService implements ITripService {
         var tripOpt = tripRepository.findById(tripId);
 
         if (tripOpt.isEmpty()) {
-            return Result.toResponse("Viagem não encontrada.", HttpStatus.NOT_FOUND);
+            return Result.toResponse("Viagem não encontrada.", HttpStatus.NO_CONTENT);
         }
 
         var trip = tripOpt.get();
@@ -116,7 +116,7 @@ public class TripService implements ITripService {
 
         tripRepository.delete(trip);
 
-        return Result.toResponse("Viagem deletada com sucesso", HttpStatus.OK);
+        return Result.toResponse("Viagem deletada com sucesso", HttpStatus.NO_CONTENT);
     }
 
     @Override

@@ -1,10 +1,12 @@
 package br.edu.ifsp.arq.trekia.controllers;
 
 import br.edu.ifsp.arq.trekia.dtos.checkitems.CreateCheckItemRequestDto;
+import br.edu.ifsp.arq.trekia.dtos.tripmedias.CreateTripMediaRequestDto;
 import br.edu.ifsp.arq.trekia.dtos.trips.CreateTripRequestDto;
 import br.edu.ifsp.arq.trekia.dtos.trips.UpdateTripRequestDto;
 import br.edu.ifsp.arq.trekia.models.services.contracts.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,14 +49,14 @@ public class TripsController {
         return tripService.deleteTrip(id);
     }
 
-    @GetMapping("/{id}/check-items")
-    public ResponseEntity<?> getCheckItemsByTripId(@PathVariable long id) {
-        return checkItemService.getCheckItemsByTripId(id);
-    }
-
     @PostMapping("/{id}/check-items")
     public ResponseEntity<?> createCheckItem(@PathVariable long id, @RequestBody CreateCheckItemRequestDto createCheckItemRequest) {
         return checkItemService.createCheckItem(id,createCheckItemRequest);
+    }
+
+    @GetMapping("/{id}/check-items")
+    public ResponseEntity<?> getCheckItemsByTripId(@PathVariable long id) {
+        return checkItemService.getCheckItemsByTripId(id);
     }
 
     @PatchMapping("/{id}/check-items/{checkItemId}/toggle")
@@ -65,6 +67,21 @@ public class TripsController {
     @DeleteMapping("/{id}/check-items/{checkItemId}")
     public ResponseEntity<?> deleteCheckItem(@PathVariable long id, @PathVariable long checkItemId) {
         return checkItemService.deleteCheckItem(id, checkItemId);
+    }
+
+    @PostMapping(value = "/media", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> createTripMedia(@ModelAttribute CreateTripMediaRequestDto createTripMediaRequestDto) {
+        return tripMediaService.createTripMedia(createTripMediaRequestDto);
+    }
+
+    @GetMapping("/{id}/media")
+    public ResponseEntity<?> getTripMediaByTripId(@PathVariable long id) {
+        return tripMediaService.getTripMediaByTripId(id);
+    }
+
+    @DeleteMapping("/{id}/media/{mediaId}")
+    public ResponseEntity<?> deleteTripMedia(@PathVariable long id, @PathVariable long mediaId) {
+        return tripMediaService.deleteTripMedia(id, mediaId);
     }
 
 }
