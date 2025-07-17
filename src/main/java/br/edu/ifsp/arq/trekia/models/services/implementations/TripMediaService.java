@@ -46,7 +46,7 @@ public class TripMediaService implements ITripMediaService {
 
         tripMediaRepository.save(tripMedia);
 
-        return Result.toResponse(tripMedia, "Imagem adicionada com sucesso", HttpStatus.CREATED);
+        return Result.toResponse(null, "Imagem adicionada com sucesso", HttpStatus.CREATED);
     }
 
     @Override

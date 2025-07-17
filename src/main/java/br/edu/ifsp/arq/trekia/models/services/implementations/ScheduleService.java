@@ -52,7 +52,7 @@ public class ScheduleService implements IScheduleService {
                         schedule.getPrecipitationChance()
                 )).toList();
 
-        return Result.toResponse(schedules, HttpStatus.OK);
+        return Result.toResponse(response, HttpStatus.OK);
     }
 
     @Override

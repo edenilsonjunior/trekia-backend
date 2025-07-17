@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,7 +33,7 @@ public class CheckItemService implements ICheckItemService {
         var checks = checkItemRepository.findByTripId(tripId);
 
         if (checks.isEmpty()) {
-            return Result.toResponse("Nenhum check encontrado", HttpStatus.NO_CONTENT);
+            return Result.toResponse(List.of(), "Nenhum check encontrado", HttpStatus.OK);
         }
 
         var checkListDto = checks.stream()
